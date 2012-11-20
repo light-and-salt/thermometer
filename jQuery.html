@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>jQuery Tools standalone demo</title>
+
+    <!-- include the Tools -->
+  <script src="./jQuery_files/jquery.tools.min.js"></script>
+  
+  <!-- standalone page styling (can be removed) -->
+  <link rel="shortcut icon" href="http://jquerytools.org/media/img/favicon.ico">
+  <link rel="stylesheet" type="text/css" href="./jQuery_files/standalone.css">
+
+  <link rel="stylesheet" type="text/css" href="./jQuery_files/skin1.css">
+<style>
+	/* Override skin1.css to make it vertical */
+    
+    /* height is now larger than width  */
+    .slider {
+		height:400px;
+		width:9px;
+        background:gray;
+	}
+    
+	/* tweak drag handle position */
+	.handle {
+		top:0;
+		left:-10px;
+        height:15px;
+	}
+    
+	/* position progressbar on the bottom edge */
+	.progress {
+		width:9px;
+		position:absolute;
+		bottom:0;
+        background:red;
+	}
+    
+    .range {
+        display:none;
+    }
+    
+    #myCanvas {
+        border: 2px solid #9C9898;
+        -moz-border-radius:30px;
+        -webkit-border-radius:30px;
+    }
+    
+    #canvaswrapper
+    {
+        position:absolute;
+        top:2%;
+        bottom:2%;
+        left:20%;
+        right:20%;
+        border: 1px solid green;
+        text-align:center;
+    }
+    
+    #liquidwrapper
+    {
+        margin:auto;
+        display:table;
+        text-align:center;
+        border:1px solid red;
+    }
+    
+    
+</style>
+        
+</head>
+
+    <body>
+        <div id="canvaswrapper">
+        <canvas id="myCanvas" width="500" height="500">
+            Oops, your browser does not support HTML5 Canvas, therefore our thermometer does not work. Please try again with another browser such as Firefox, Chrome, Opera, Safari or Konqueror.
+        </canvas>
+            <script>
+                var canvas = document.getElementById('myCanvas');
+                
+                var context = canvas.getContext('2d');
+                var centerX = canvas.width/2;
+                var centerY = canvas.height - 25;
+                var radius = 20;
+                // draw the red bulb
+                context.beginPath();
+                context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+                context.fillStyle = 'blue';
+                context.fill();
+                context.closePath();
+                // draw the red column
+                context.fillRect(centerX-5, 26, 10, canvas.height-50);
+                
+                context.lineWidth = 2;
+                context.strokeStyle = '#0000';
+                // draw the borders
+                context.beginPath();
+                context.arc(centerX, centerY, radius+2, -0.4 * Math.PI, 1.4 * Math.PI, false);
+                context.moveTo(centerX-7, centerY-20);
+                context.lineTo(centerX-7, 24);
+                context.lineTo(centerX+7, 24);
+                context.lineTo(centerX+7, centerY-20);
+                context.stroke();
+                context.closePath();
+                
+                // draw the readings
+                context.fillStyle    = '#000';
+                context.font         = 'italic 12px sans-serif';
+                context.textBaseline = 'middle';
+                context.beginPath();
+                var c_xbegin = centerX-10;
+                var f_xbegin = centerX+10;
+                var full = 20;
+                var half = 10;
+                var c_textl = 50;
+                var f_textl = 30;
+                var c_ybegin = 420;
+                var c_yend = 50;
+                var c_yrange = c_ybegin-c_yend;
+                var c_incre = c_yrange/22;
+                for(var t=-50; t<=60; t=t+5)
+                {
+                    var y_pos = c_ybegin - c_incre*(t+50)/5;
+                    if(t%10==0)
+                    {
+                        context.moveTo(c_xbegin,y_pos);
+                        context.lineTo(c_xbegin-full,y_pos);
+                        context.fillText  (t, c_xbegin-c_textl, y_pos);
+                    }
+                    else
+                    {
+                        context.moveTo(c_xbegin,y_pos);
+                        context.lineTo(c_xbegin-half,y_pos);
+                    }
+                }
+                var f_incre = c_yrange*10/198;
+                var f_ybegin = c_ybegin-2*c_incre;
+                for(var t=-60; t<=140; t=t+10)
+                {
+                    var y_pos = f_ybegin - f_incre*(t+40)/10;
+                    context.moveTo(f_xbegin,y_pos);
+                    context.lineTo(f_xbegin+full,y_pos);
+                    context.fillText  (t, f_xbegin+f_textl, y_pos);
+                }
+                context.stroke();
+                context.closePath();
+                
+                var canvasPosition = {
+                    x: canvas.offset().left,
+                    y: canvas.offset().top
+                };
+                canvas.on('click', function(e) {
+                          
+                          // use pageX and pageY to get the mouse position
+                          // relative to the browser window
+                          
+                          var mouse = {
+                          x: e.pageX - canvasPosition.x,
+                          y: e.pageY - canvasPosition.y
+                          }
+                          
+                          // now you have local coordinates,
+                          // which consider a (0,0) origin at the
+                          // top-left of canvas element
+                          });
+                
+                </script>
+        </div>
+        
+        <!--
+        <input id="Cbox" type = "text"
+        id = "C"
+        value = "0" />
+        <label>C</label>
+        
+        
+        <div id="Fbox">
+        <input type = "text"
+        id = "F"
+        value = "32" />
+        <label>F</label>
+        </div>
+        -->
+        <!--
+        <p class="note"><span id="Cvalue">0</span>C</p>
+        <p class="note"><span id="Fvalue">32</span>F</p>
+         -->
+        <input type="text" id="Cvalue" value="0"/><label>C</label>
+        <input type="text" id="Fvalue" value="32"/><label>F</label>
+        
+        <div id="liquidwrapper">
+            <!--<input type="range" min="0" max="200" step="0.1" value="0"/>
+             -->
+            <input id="defaultSlider" type="range" min="0" max="200" />
+        </div>
+        
+                
+        <script>
+            
+            $(function(){
+              
+              $(":range").rangeinput({
+                                     progress: true,
+                                     max: 60
+                                     });
+
+
+              var Cvalue = document.getElementById('Cvalue');
+              var Fvalue = document.getElementById('Fvalue');
+              
+              $('#defaultSlider').change(function(){
+                                         var vv=parseInt(this.value);
+                                         Fvalue.value=(vv-60);
+                                         Cvalue.value=(vv-92)*5/9;
+                                         });
+              //$('#defaultSlider').change(function(){                                         });
+              // Trigger the event on load, so
+              // the value field is populated:
+              
+              //$('#defaultSlider').change();
+              
+              var sliderapi = $("#defaultSlider").data("rangeinput");
+              $('#Fvalue').change(function()
+                                  {
+                                  sliderapi.setValue(parseInt(this.value)+60);
+                                  Cvalue.value=(parseInt(this.value)-32)*5/9;
+                                  });
+              
+              $('#Cvalue').change(function()
+                                  {
+                                  Fvalue.value=1.8*parseInt(this.value)+32;
+                                  sliderapi.setValue(Fvalue.value+60);
+                                  });
+               
+              
+              });
+        </script>
+    </body>
+</html>
