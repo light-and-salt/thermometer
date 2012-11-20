@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<head><meta charset="utf-8" http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
   <title>Thermometer</title>
 
     <!-- include the Tools -->
@@ -15,9 +15,10 @@
     
     /* height is now larger than width  */
     .slider {
-		height:400px;
+		height:390px;
 		width:9px;
-        background:gray;
+        background:white;
+        
 	}
     
 	/* tweak drag handle position */
@@ -44,7 +45,7 @@
         -moz-border-radius:30px;
         -webkit-border-radius:30px;
         background:white;
-        opacity:0.8;
+        opacity:0.95;
     }
     
     #canvaswrapper
@@ -61,13 +62,49 @@
     #liquidwrapper
     {
         position:absolute;
-        top:4.2%;
+        top:32px;
         left:49.3%;
         right:49.3%;
         align:center;
         /*border:1px solid red;*/
     }
     
+    #backgroundR
+    {
+        position:absolute;
+        top:0;
+        bottom:75%;
+        left:0;
+        right:0;
+        background:PaleVioletRed;
+    }
+    #backgroundY
+    {
+        position:absolute;
+        top:25%;
+        bottom:50%;
+        left:0;
+        right:0;
+        background:Gold;
+    }
+    #backgroundB
+    {
+        position:absolute;
+        top:75%;
+        bottom:0;
+        left:0;
+        right:0;
+        background:cornflowerblue;
+    }
+    #backgroundG
+    {
+        position:absolute;
+        top:50%;
+        bottom:25%;
+        left:0;
+        right:0;
+        background:#6b8e23;
+    }
     #background
     {
         position:absolute;
@@ -75,14 +112,20 @@
         bottom:0;
         left:0;
         right:0;
-        background:#6b8e23;
+        background:darkgreen;
     }
-    
+
     #cbox
     {
         position:absolute;
         top:15%;
         left:20%;
+    }
+    #cdegree
+    {
+        position:absolute;
+        top:16%;
+        left:36%;
         font-size:30px;
     }
     #Cvalue {
@@ -101,6 +144,13 @@
     {
         position:absolute;
         top:15%;
+        right:25%;
+        font-size:30px;
+    }
+    #fdegree
+    {
+        position:absolute;
+        top:16%;
         right:20%;
         font-size:30px;
     }
@@ -123,8 +173,13 @@
 </head>
 
     <body>
+        <div id="backgroundR"></div>
+        <div id="backgroundY"></div>
+        <div id="backgroundB"></div>
+        <div id="backgroundG"></div>
+        <!--
         <div id="background"></div>
-        
+        -->
         <div id="canvaswrapper">
             <canvas id="myCanvas" width="500" height="500">
             Oops, your browser does not support HTML5 Canvas, therefore our thermometer does not work. Please try again with another browser such as Firefox, Chrome, Opera, Safari or Konqueror.
@@ -225,16 +280,22 @@
                 </script>
             
             <div id="liquidwrapper">
-                <input id="defaultSlider" type="range" min="0" max="200" />
+                <input id="defaultSlider" type="range" min="0" max="200" value="92"/>
             </div>
             
             <div id="cbox">
-                <input type="text" id="Cvalue" value="0"/><label> C</label>
+                <input type="text" id="Cvalue" value="0"/>
+            </div>
+            <div id="cdegree">
+            <label id=>°C</label>
             </div>
             
             <div id="fbox">
-                <input type="text" id="Fvalue" value="32"/><label> F</label>
+                <input type="text" id="Fvalue" value="32"/>
             </div>
+            <div id="fdegree">
+                <label>°F</label>
+                </div>
 
 
         </div>
