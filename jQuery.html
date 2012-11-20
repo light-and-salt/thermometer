@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>jQuery Tools standalone demo</title>
+  <title>Thermometer</title>
 
     <!-- include the Tools -->
   <script src="./jQuery_files/jquery.tools.min.js"></script>
@@ -43,6 +43,8 @@
         border: 2px solid #9C9898;
         -moz-border-radius:30px;
         -webkit-border-radius:30px;
+        background:white;
+        opacity:0.8;
     }
     
     #canvaswrapper
@@ -52,28 +54,81 @@
         bottom:2%;
         left:20%;
         right:20%;
-        border: 1px solid green;
+       /* border: 1px solid green;*/
         text-align:center;
     }
     
     #liquidwrapper
     {
-        margin:auto;
-        display:table;
-        text-align:center;
-        border:1px solid red;
+        position:absolute;
+        top:4.2%;
+        left:49.3%;
+        right:49.3%;
+        align:center;
+        /*border:1px solid red;*/
     }
     
+    #background
+    {
+        position:absolute;
+        top:0;
+        bottom:0;
+        left:0;
+        right:0;
+        background:#6b8e23;
+    }
+    
+    #cbox
+    {
+        position:absolute;
+        top:15%;
+        left:20%;
+        font-size:30px;
+    }
+    #Cvalue {
+        border:1px inset #ddd;
+        float:left;
+        font-size:30px;
+        margin:0 0 15px 15px;
+        padding:3px 3px;
+        text-align:center;
+        width:85px;
+        -moz-border-radius:5px;
+        -webkit-border-radius:5px;
+    }
+    
+    #fbox
+    {
+        position:absolute;
+        top:15%;
+        right:20%;
+        font-size:30px;
+    }
+    #Fvalue
+    {
+        border:1px inset #ddd;
+        float:left;
+        font-size:30px;
+        margin:0 0 15px 15px;
+        padding:3px 3px;
+        text-align:center;
+        width:85px;
+        -moz-border-radius:5px;
+        -webkit-border-radius:5px;
+    }
+
     
 </style>
         
 </head>
 
     <body>
+        <div id="background"></div>
+        
         <div id="canvaswrapper">
-        <canvas id="myCanvas" width="500" height="500">
+            <canvas id="myCanvas" width="500" height="500">
             Oops, your browser does not support HTML5 Canvas, therefore our thermometer does not work. Please try again with another browser such as Firefox, Chrome, Opera, Safari or Konqueror.
-        </canvas>
+            </canvas>
             <script>
                 var canvas = document.getElementById('myCanvas');
                 
@@ -84,11 +139,13 @@
                 // draw the red bulb
                 context.beginPath();
                 context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-                context.fillStyle = 'blue';
+                context.fillStyle = 'red';
                 context.fill();
                 context.closePath();
                 // draw the red column
-                context.fillRect(centerX-5, 26, 10, canvas.height-50);
+                context.fillRect(centerX-4.5,canvas.height-80,9,50);
+                //context.fillStyle = 'blue';
+                //context.fillRect(centerX-5, 26, 10, canvas.height-50);
                 
                 context.lineWidth = 2;
                 context.strokeStyle = '#0000';
@@ -96,9 +153,11 @@
                 context.beginPath();
                 context.arc(centerX, centerY, radius+2, -0.4 * Math.PI, 1.4 * Math.PI, false);
                 context.moveTo(centerX-7, centerY-20);
-                context.lineTo(centerX-7, 24);
-                context.lineTo(centerX+7, 24);
+                context.lineTo(centerX-7, 32);
+                context.arc(centerX,32,7,Math.PI,2*Math.PI,false);
+                context.moveTo(centerX+7, 32);
                 context.lineTo(centerX+7, centerY-20);
+                
                 context.stroke();
                 context.closePath();
                 
@@ -164,35 +223,23 @@
                           });
                 
                 </script>
+            
+            <div id="liquidwrapper">
+                <input id="defaultSlider" type="range" min="0" max="200" />
+            </div>
+            
+            <div id="cbox">
+                <input type="text" id="Cvalue" value="0"/><label> C</label>
+            </div>
+            
+            <div id="fbox">
+                <input type="text" id="Fvalue" value="32"/><label> F</label>
+            </div>
+
+
         </div>
         
-        <!--
-        <input id="Cbox" type = "text"
-        id = "C"
-        value = "0" />
-        <label>C</label>
-        
-        
-        <div id="Fbox">
-        <input type = "text"
-        id = "F"
-        value = "32" />
-        <label>F</label>
-        </div>
-        -->
-        <!--
-        <p class="note"><span id="Cvalue">0</span>C</p>
-        <p class="note"><span id="Fvalue">32</span>F</p>
-         -->
-        <input type="text" id="Cvalue" value="0"/><label>C</label>
-        <input type="text" id="Fvalue" value="32"/><label>F</label>
-        
-        <div id="liquidwrapper">
-            <!--<input type="range" min="0" max="200" step="0.1" value="0"/>
-             -->
-            <input id="defaultSlider" type="range" min="0" max="200" />
-        </div>
-        
+                
                 
         <script>
             
