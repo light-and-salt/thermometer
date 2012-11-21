@@ -336,14 +336,32 @@
                                   {
                                   var vv= parseInt(this.value);
                                   sliderapi.setValue(vv+60);
-                                  Cvalue.value=(vv-32)*5/9;
-                                  });
+                                  var temp = Math.round(10*(vv-32)*5/9)/10;
+                                if(isNaN(vv))
+                                 {
+                                    Cvalue.value="";
+                                 }
+                                 else
+                                 {
+                                 Cvalue.value=temp;
+                                 }
+                                 }
+                                 
+                                  );
               
               $('#Cvalue').keyup(function()
                                   {
                                   var vv=parseInt(this.value);
                                   sliderapi.setValue(1.8*vv+92);
-                                  Fvalue.value=1.8*vv+32;
+                                 if(isNaN(vv))
+                                 {
+                                    Fvalue.value="";
+                                 }
+                                 else
+                                 {
+                                    Fvalue.value=Math.round(10*(1.8*vv+32))/10;
+                                 }
+                                 
                                   });
                
               
