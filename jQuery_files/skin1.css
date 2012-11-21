@@ -22,19 +22,31 @@
 
 /* drag handle */
 .handle {
-    background:#fff url(/media/img/gradient/h30.png) repeat-x 0 0;
-    height:28px;
-    width:28px;
-    top:-12px;
+    width:15px;
+    height:15px;
+    top:0;
+    border:2px solid #000;
     position:absolute;
     display:block;
-    margin-top:1px;
-    border:1px solid #000;
+    background:white;
+    margin-top:4px;
+
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    -webkit-transform-origin: 0 100%;
+    -moz-transform-origin: 0 100%;
+    -ms-transform-origin: 0 100%;
+    -o-transform-origin: 0 100%;
+    transform-origin: 0 100%;
+
     cursor:move;
     -moz-box-shadow:0 0 6px #000;
     -webkit-box-shadow:0 0 6px #000;
-    -moz-border-radius:14px;
-    -webkit-border-radius:14px;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
 
 }
 
@@ -50,5 +62,4 @@
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
 }
-
 

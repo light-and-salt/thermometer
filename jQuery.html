@@ -23,10 +23,14 @@
     
 	/* tweak drag handle position */
 	.handle {
-		top:0;
-		left:-10px;
-        height:15px;
-	}
+        left:5px;
+    }
+    .handle:hover{
+        background:darkgray;
+    }
+    .handle:active{
+        background:darkgray;
+    }
     
 	/* position progressbar on the bottom edge */
 	.progress {
@@ -180,6 +184,7 @@
         <!--
         <div id="background"></div>
         -->
+        <div type="diamond"></div>
         <div id="canvaswrapper">
             <canvas id="myCanvas" width="500" height="500">
             Oops, your browser does not support HTML5 Canvas, therefore our thermometer does not work. Please try again with another browser such as Firefox, Chrome, Opera, Safari or Konqueror.
