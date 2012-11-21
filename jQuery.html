@@ -17,7 +17,7 @@
     .slider {
 		height:390px;
 		width:9px;
-        background:white;
+        background:transparent;
         
 	}
     
@@ -332,16 +332,18 @@
               //$('#defaultSlider').change();
               
               var sliderapi = $("#defaultSlider").data("rangeinput");
-              $('#Fvalue').change(function()
+              $('#Fvalue').keyup(function()
                                   {
-                                  sliderapi.setValue(parseInt(this.value)+60);
-                                  Cvalue.value=(parseInt(this.value)-32)*5/9;
+                                  var vv= parseInt(this.value);
+                                  sliderapi.setValue(vv+60);
+                                  Cvalue.value=(vv-32)*5/9;
                                   });
               
-              $('#Cvalue').change(function()
+              $('#Cvalue').keyup(function()
                                   {
-                                  Fvalue.value=1.8*parseInt(this.value)+32;
-                                  sliderapi.setValue(Fvalue.value+60);
+                                  var vv=parseInt(this.value);
+                                  sliderapi.setValue(1.8*vv+92);
+                                  Fvalue.value=1.8*vv+32;
                                   });
                
               
