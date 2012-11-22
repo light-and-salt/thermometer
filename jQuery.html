@@ -319,23 +319,14 @@
 
               var Cvalue = document.getElementById('Cvalue');
               var Fvalue = document.getElementById('Fvalue');
-              
-              $('#defaultSlider').change(function(){
-                                         var vv=parseFloat(this.value);
-                                         Fvalue.value=Math.round((vv-60)*10)/10;
-                                         Cvalue.value=Math.round((vv-92)*5*10/9)/10;
-                                         });
-              //$('#defaultSlider').change(function(){                                         });
-              // Trigger the event on load, so
-              // the value field is populated:
-              
-              //$('#defaultSlider').change();
-              
               var sliderapi = $("#defaultSlider").data("rangeinput");
+              
+                            
               $('#Fvalue').keyup(function()
                                   {
                                   var vv= parseFloat(this.value);
                                   sliderapi.setValue(vv+60);
+                                 
                                   var temp = Math.round(10*(vv-32)*5/9)/10;
                                 if(isNaN(vv))
                                  {
@@ -345,6 +336,7 @@
                                  {
                                  Cvalue.value=temp;
                                  }
+                                  
                                  }
                                  
                                   );
@@ -353,6 +345,7 @@
                                   {
                                   var vv=parseFloat(this.value);
                                   sliderapi.setValue(1.8*vv+92);
+                                 
                                  if(isNaN(vv))
                                  {
                                     Fvalue.value="";
@@ -363,8 +356,23 @@
                                  }
                                  
                                   });
-               
               
+              
+              
+              sliderapi.onSlide(function(){
+                                var vv=parseFloat(sliderapi.getValue());
+                                Fvalue.value=Math.round((vv-60)*10)/10;
+                                Cvalue.value=Math.round((vv-92)*5*10/9)/10;
+                                });
+              
+              
+              sliderapi.change(function(){
+                               var vv=parseFloat(sliderapi.getValue());
+                               Fvalue.value=Math.round((vv-60)*10)/10;
+                               Cvalue.value=Math.round((vv-92)*5*10/9)/10;
+                               });
+               
+
               });
         </script>
     </body>
