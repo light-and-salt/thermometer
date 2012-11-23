@@ -251,8 +251,8 @@
             var f_xbegin = centerX+10;
             var full = 20;
             var half = 10;
-            var c_textl = 50;
-            var f_textl = 30;
+            var c_textl = 35;
+            var f_textl = 40;
             var c_ybegin = 420;
             var c_yend = 50;
             var c_yrange = c_ybegin-c_yend;
@@ -307,7 +307,21 @@
                     {
                         context.moveTo(c_xbegin,y_pos);
                         context.lineTo(c_xbegin-full,y_pos);
-                        context.fillText(t, c_xbegin-c_textl, y_pos);
+                        // label it, with nice alignment
+                        if(t==0)
+                        {
+                            context.fillText(t, c_xbegin-c_textl, y_pos);
+                        }
+                        else if(t<0)
+                        {
+                            context.fillText(t, c_xbegin-c_textl-10, y_pos);
+                        }
+                        else if(t>0)
+                        {
+                            context.fillText(t, c_xbegin-c_textl-7, y_pos);
+                        }
+                        
+                        
                     }
                     else
                     {
@@ -338,13 +352,30 @@
                         context.fillStyle=color;
                         context.strokeStyle=color;
                     }
-                    // actually draw it, and label it
+                    // actually draw it
                     context.beginPath();
                     context.moveTo(f_xbegin,y_pos);
                     context.lineTo(f_xbegin+full,y_pos);
                     context.stroke();
                     context.closePath();
-                    context.fillText(t, f_xbegin+f_textl, y_pos);
+                    // label the numbers, with nice alignment
+                    if(t==0)
+                    {
+                        context.fillText(t, f_xbegin+f_textl, y_pos);   
+                    }
+                    else if(t<0)
+                    {
+                        context.fillText(t, f_xbegin+f_textl-10, y_pos);
+                    }
+                    else if(t>0 && t<100)
+                    {
+                        context.fillText(t, f_xbegin+f_textl-7, y_pos);
+                    }
+                    else if(t>=100)
+                    {
+                        context.fillText(t, f_xbegin+f_textl-14, y_pos);
+                    }
+                    
                 }
                 
                 
