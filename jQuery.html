@@ -243,18 +243,20 @@
                           });
                 */
                 
-                function drawReadings(color)
+                function drawReadings(color,h_color,mouse_x,mouse_y)
                 {
                     // clear the previous drawing
+                    // x: 180 -- 243 -- 260 -- 320
+                    // y: 40 -- 440
                     context.clearRect(180, 40, 62, 400);
-                    context.clearRect(260, 40, 65, 400);
+                    context.clearRect(258, 40, 65, 400);
                     
                     // draw the readings
                     context.fillStyle    = color;
                     context.strokeStyle = color;
                     context.font         = 'normal 12px sans-serif';
                     context.textBaseline = 'middle';
-                    context.beginPath();
+                    
                     var c_xbegin = centerX-10;
                     var f_xbegin = centerX+10;
                     var full = 20;
@@ -268,6 +270,19 @@
                     for(var t=-50; t<=60; t=t+5)
                     {
                         var y_pos = c_ybegin - c_incre*(t+50)/5;
+                        
+                        if(mouse_x>=180 && mouse_x<=243 && mouse_y>y_pos-0.5*c_incre && mouse_y<y_pos+0.5*c_incre)
+                        {
+                            
+                            context.strokeStyle=h_color;
+                            context.fillStyle=h_color;
+                        }
+                        else
+                        {
+                            context.fillStyle=color;
+                            context.strokeStyle=color;
+                        }
+                        context.beginPath();
                         if(t%10==0)
                         {
                             context.moveTo(c_xbegin,y_pos);
@@ -279,18 +294,36 @@
                             context.moveTo(c_xbegin,y_pos);
                             context.lineTo(c_xbegin-half,y_pos);
                         }
+                        context.stroke();
+                        context.closePath();
+
                     }
+                    
                     var f_incre = c_yrange*10/198;
                     var f_ybegin = c_ybegin-2*c_incre;
                     for(var t=-60; t<=140; t=t+10)
                     {
                         var y_pos = f_ybegin - f_incre*(t+40)/10;
+                        
+                        if(mouse_x>=260 && mouse_x<=320 && mouse_y>y_pos-0.5*f_incre && mouse_y<y_pos+0.5*f_incre)
+                        {
+                            
+                            context.strokeStyle=h_color;
+                            context.fillStyle=h_color;
+                        }
+                        else
+                        {
+                            context.fillStyle=color;
+                            context.strokeStyle=color;
+                        }
+                        context.beginPath();
                         context.moveTo(f_xbegin,y_pos);
                         context.lineTo(f_xbegin+full,y_pos);
-                        context.fillText  (t, f_xbegin+f_textl, y_pos);
+                        context.stroke();
+                        context.closePath();
+                        context.fillText(t, f_xbegin+f_textl, y_pos);
                     }
-                    context.stroke();
-                    context.closePath();
+                    
 
                 }
                 
@@ -314,15 +347,9 @@
                                         var mousePos = getMousePos(canvas, evt);
                                         var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
                                         writeMessage(canvas, message);
-                                        if(mousePos.x>=180 && mousePos.x<=320 && mousePos.y>=40 && mousePos.y<=440)
-                                        {
-                                        drawReadings('red');
-                                        }
-                                        else
-                                        {
-                                        drawReadings('black');
-                                        }
                                         
+                                        drawReadings('black','red',mousePos.x,mousePos.y);
+                                                                                
                                         }, false);
                 
                 </script>
