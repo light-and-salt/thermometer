@@ -320,29 +320,37 @@
               var Cvalue = document.getElementById('Cvalue');
               var Fvalue = document.getElementById('Fvalue');
               var sliderapi = $("#defaultSlider").data("rangeinput");
+              var enable_onslide=true;
               
                             
-              $('#Fvalue').keyup(function()
-                                  {
-                                  var vv= parseFloat(this.value);
-                                  sliderapi.setValue(vv+60);
+              $('#Fvalue').keyup(
+                                 function()
+                                {
+                                    enable_onslide=false;
                                  
-                                  var temp = Math.round(10*(vv-32)*5/9)/10;
-                                if(isNaN(vv))
-                                 {
-                                    Cvalue.value="";
-                                 }
-                                 else
-                                 {
-                                 Cvalue.value=temp;
-                                 }
+                                    var vv= parseFloat(this.value);
+                                    sliderapi.setValue(vv+60);
+                                 
+                                    var temp = Math.round(10*(vv-32)*5/9)/10;
+                                    if(isNaN(vv))
+                                    {
+                                        Cvalue.value="";
+                                    }
+                                    else
+                                    {
+                                        Cvalue.value=temp;
+                                    }
+                                 
+                                 enable_onslide=true;
                                   
-                                 }
+                                }
                                  
                                   );
               
               $('#Cvalue').keyup(function()
                                   {
+                                 enable_onslide=false;
+                                 
                                   var vv=parseFloat(this.value);
                                   sliderapi.setValue(1.8*vv+92);
                                  
@@ -355,14 +363,20 @@
                                     Fvalue.value=Math.round(10*(1.8*vv+32))/10;
                                  }
                                  
+                                 enable_onslide=true;
+                                 
                                   });
               
               
               
               sliderapi.onSlide(function(){
+                                if(enable_onslide==true)
+                                {
                                 var vv=parseFloat(sliderapi.getValue());
                                 Fvalue.value=Math.round((vv-60)*10)/10;
                                 Cvalue.value=Math.round((vv-92)*5*10/9)/10;
+                                }
+                                
                                 });
               
               
