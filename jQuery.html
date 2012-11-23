@@ -189,189 +189,6 @@
             <canvas id="myCanvas" width="500" height="500">
             Oops, your browser does not support HTML5 Canvas, therefore our thermometer does not work. Please try again with another browser such as Firefox, Chrome, Opera, Safari or Konqueror.
             </canvas>
-            <script>
-                var canvas = document.getElementById('myCanvas');
-                
-                var context = canvas.getContext('2d');
-                var centerX = canvas.width/2;
-                var centerY = canvas.height - 25;
-                var radius = 20;
-                // draw the red bulb
-                context.beginPath();
-                context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-                context.fillStyle = 'red';
-                context.fill();
-                context.closePath();
-                // draw the red column
-                context.fillRect(centerX-4.5,canvas.height-80,9,50);
-                //context.fillStyle = 'blue';
-                //context.fillRect(centerX-5, 26, 10, canvas.height-50);
-                
-                // draw the borders
-                context.lineWidth = 2;
-                context.strokeStyle = '#0000';
-                context.beginPath();
-                context.arc(centerX, centerY, radius+2, -0.4 * Math.PI, 1.4 * Math.PI, false);
-                context.moveTo(centerX-7, centerY-20);
-                context.lineTo(centerX-7, 32);
-                context.arc(centerX,32,7,Math.PI,2*Math.PI,false);
-                context.moveTo(centerX+7, 32);
-                context.lineTo(centerX+7, centerY-20);
-                context.stroke();
-                context.closePath();
-                
-                // draw the readings
-                var c_xbegin = centerX-10;
-                var f_xbegin = centerX+10;
-                var full = 20;
-                var half = 10;
-                var c_textl = 50;
-                var f_textl = 30;
-                var c_ybegin = 420;
-                var c_yend = 50;
-                var c_yrange = c_ybegin-c_yend;
-                var c_incre = c_yrange/22;
-                var f_incre = c_yrange*10/198;
-                var f_ybegin = c_ybegin-2*c_incre;
-                // highlight variables
-                var h_type = "none";
-                var h_value = -999;
-
-                drawReadings('black','black',0,0);
-                
-                function drawReadings(color,h_color,mouse_x,mouse_y)
-                {
-                    // clear the previous drawing
-                    // x: 180 -- 243 -- 260 -- 320
-                    // y: 40 -- 440
-                    context.clearRect(180, 40, 62, 400);
-                    context.clearRect(258, 40, 65, 400);
-                    
-                    // reset the highlight variables
-                    h_type="none";
-                    h_value=-999;
-                    
-                    // draw the readings
-                    context.fillStyle    = color;
-                    context.strokeStyle = color;
-                    context.font         = 'normal 12px sans-serif';
-                    context.textBaseline = 'middle';
-                    
-                    // draw the C readings
-                    for(var t=-50; t<=60; t=t+5)
-                    {
-                        var y_pos = c_ybegin - c_incre*(t+50)/5;
-                        
-                        // determine color: hightlight or not
-                        if(mouse_x>=180 && mouse_x<=243 && mouse_y>y_pos-0.5*c_incre && mouse_y<y_pos+0.5*c_incre)
-                        {
-                            context.strokeStyle=h_color;
-                            context.fillStyle=h_color;
-                            h_type="Celsius";
-                            h_value=t;
-                        }
-                        else
-                        {
-                            context.fillStyle=color;
-                            context.strokeStyle=color;
-                        }
-                        // actually draw it and label the number if necessary
-                        context.beginPath();
-                        if(t%10==0)
-                        {
-                            context.moveTo(c_xbegin,y_pos);
-                            context.lineTo(c_xbegin-full,y_pos);
-                            context.fillText(t, c_xbegin-c_textl, y_pos);
-                        }
-                        else
-                        {
-                            context.moveTo(c_xbegin,y_pos);
-                            context.lineTo(c_xbegin-half,y_pos);
-                        }
-                        context.stroke();
-                        context.closePath();
-
-                    }
-                    
-                    // draw the F readings
-                    for(var t=-60; t<=140; t=t+10)
-                    {
-                        var y_pos = f_ybegin - f_incre*(t+40)/10;
-                        
-                        // determine the color: highlight or not
-                        if(mouse_x>=260 && mouse_x<=320 && mouse_y>y_pos-0.5*f_incre && mouse_y<y_pos+0.5*f_incre)
-                        {
-                            
-                            context.strokeStyle=h_color;
-                            context.fillStyle=h_color;
-                            h_type="Fahrenheit";
-                            h_value=t;
-                        }
-                        else
-                        {
-                            context.fillStyle=color;
-                            context.strokeStyle=color;
-                        }
-                        // actually draw it, and label it
-                        context.beginPath();
-                        context.moveTo(f_xbegin,y_pos);
-                        context.lineTo(f_xbegin+full,y_pos);
-                        context.stroke();
-                        context.closePath();
-                        context.fillText(t, f_xbegin+f_textl, y_pos);
-                    }
-                    
-
-                }
-                
-                function clickUpdate(mouse_x,mouse_y)
-                {
-                    // clicked a C temperature
-                    if(mouse_x>=180 && mouse_x<=243 && mouse_y>=40 && mouse_y<=440 && h_type=="Celsius")
-                    {
-                        
-                        writeMessage(canvas,"Temp = " + h_value + "Celcius");
-                    }
-                    // clicked an F temperature
-                    if(mouse_x>=260 && mouse_x<=320 && mouse_y>=40 && mouse_y<=440 && h_type=="Fahrenheit")
-                    {
-                        
-                        writeMessage(canvas,"Temp = " + h_value + "Fahrenheit");
-                    }
-                }
-                
-                function writeMessage(canvas, message) {
-                    var context = canvas.getContext('2d');
-                    context.clearRect(0, 0, canvas.width, 40);
-                    context.font = '10pt Calibri';
-                    context.fillStyle = 'black';
-                    context.fillText(message, 10, 25);
-                }
-                
-                function getMousePos(canvas, evt) {
-                    var rect = canvas.getBoundingClientRect();
-                    return {
-                        x: evt.clientX - rect.left,
-                        y: evt.clientY - rect.top
-                    };
-                }
-                                
-                canvas.addEventListener('mousemove', function(evt) {
-                                        var mousePos = getMousePos(canvas, evt);
-                                        var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
-                                        writeMessage(canvas, message);
-                                        
-                                        drawReadings('black','red',mousePos.x,mousePos.y);
-                                                                                
-                                        }, false);
-                
-                canvas.addEventListener('click', function(evt)
-                                        {
-                                        var mousePos = getMousePos(canvas, evt);
-                                        clickUpdate(mousePos.x,mousePos.y);
-                                        },false);
-                
-                </script>
             
             <div id="liquidwrapper">
                 <input id="defaultSlider" type="range" min="0" max="200" value="92" step="0.1"/>
@@ -398,8 +215,198 @@
                 
         <script>
             
-            $(function(){
-              
+           
+            var canvas = document.getElementById('myCanvas');
+            
+            var context = canvas.getContext('2d');
+            var centerX = canvas.width/2;
+            var centerY = canvas.height - 25;
+            var radius = 20;
+            // draw the red bulb
+            context.beginPath();
+            context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+            context.fillStyle = 'red';
+            context.fill();
+            context.closePath();
+            // draw the red column
+            context.fillRect(centerX-4.5,canvas.height-80,9,50);
+            //context.fillStyle = 'blue';
+            //context.fillRect(centerX-5, 26, 10, canvas.height-50);
+            
+            // draw the borders
+            context.lineWidth = 2;
+            context.strokeStyle = '#0000';
+            context.beginPath();
+            context.arc(centerX, centerY, radius+2, -0.4 * Math.PI, 1.4 * Math.PI, false);
+            context.moveTo(centerX-7, centerY-20);
+            context.lineTo(centerX-7, 32);
+            context.arc(centerX,32,7,Math.PI,2*Math.PI,false);
+            context.moveTo(centerX+7, 32);
+            context.lineTo(centerX+7, centerY-20);
+            context.stroke();
+            context.closePath();
+            
+            // draw the readings
+            var c_xbegin = centerX-10;
+            var f_xbegin = centerX+10;
+            var full = 20;
+            var half = 10;
+            var c_textl = 50;
+            var f_textl = 30;
+            var c_ybegin = 420;
+            var c_yend = 50;
+            var c_yrange = c_ybegin-c_yend;
+            var c_incre = c_yrange/22;
+            var f_incre = c_yrange*10/198;
+            var f_ybegin = c_ybegin-2*c_incre;
+            // highlight variables
+            var h_type = "none";
+            var h_value = -999;
+            
+            drawReadings('black','black',0,0);
+            
+            function drawReadings(color,h_color,mouse_x,mouse_y)
+            {
+                // clear the previous drawing
+                // x: 180 -- 243 -- 260 -- 320
+                // y: 40 -- 440
+                context.clearRect(180, 40, 62, 400);
+                context.clearRect(258, 40, 65, 400);
+                
+                // reset the highlight variables
+                h_type="none";
+                h_value=-999;
+                
+                // draw the readings
+                context.fillStyle    = color;
+                context.strokeStyle = color;
+                context.font         = 'normal 12px sans-serif';
+                context.textBaseline = 'middle';
+                
+                // draw the C readings
+                for(var t=-50; t<=60; t=t+5)
+                {
+                    var y_pos = c_ybegin - c_incre*(t+50)/5;
+                    
+                    // determine color: hightlight or not
+                    if(mouse_x>=180 && mouse_x<=243 && mouse_y>y_pos-0.5*c_incre && mouse_y<y_pos+0.5*c_incre)
+                    {
+                        context.strokeStyle=h_color;
+                        context.fillStyle=h_color;
+                        h_type="Celsius";
+                        h_value=t;
+                    }
+                    else
+                    {
+                        context.fillStyle=color;
+                        context.strokeStyle=color;
+                    }
+                    // actually draw it and label the number if necessary
+                    context.beginPath();
+                    if(t%10==0)
+                    {
+                        context.moveTo(c_xbegin,y_pos);
+                        context.lineTo(c_xbegin-full,y_pos);
+                        context.fillText(t, c_xbegin-c_textl, y_pos);
+                    }
+                    else
+                    {
+                        context.moveTo(c_xbegin,y_pos);
+                        context.lineTo(c_xbegin-half,y_pos);
+                    }
+                    context.stroke();
+                    context.closePath();
+                    
+                }
+                
+                // draw the F readings
+                for(var t=-60; t<=140; t=t+10)
+                {
+                    var y_pos = f_ybegin - f_incre*(t+40)/10;
+                    
+                    // determine the color: highlight or not
+                    if(mouse_x>=260 && mouse_x<=320 && mouse_y>y_pos-0.5*f_incre && mouse_y<y_pos+0.5*f_incre)
+                    {
+                        
+                        context.strokeStyle=h_color;
+                        context.fillStyle=h_color;
+                        h_type="Fahrenheit";
+                        h_value=t;
+                    }
+                    else
+                    {
+                        context.fillStyle=color;
+                        context.strokeStyle=color;
+                    }
+                    // actually draw it, and label it
+                    context.beginPath();
+                    context.moveTo(f_xbegin,y_pos);
+                    context.lineTo(f_xbegin+full,y_pos);
+                    context.stroke();
+                    context.closePath();
+                    context.fillText(t, f_xbegin+f_textl, y_pos);
+                }
+                
+                
+            }
+            
+            function clickUpdate(mouse_x,mouse_y)
+            {
+                // clicked a C temperature
+                if(mouse_x>=180 && mouse_x<=243 && mouse_y>=40 && mouse_y<=440 && h_type=="Celsius")
+                {
+                    //writeMessage(canvas,"Temp = " + h_value + "Celcius");
+                    enable_onslide=false;
+                    sliderapi.setValue(1.8*h_value+92);
+                    Cvalue.value=h_value;
+                    Fvalue.value=Math.round((1.8*h_value+32)*10)/10;
+                    enable_onslide=true;
+                    
+                }
+                // clicked an F temperature
+                if(mouse_x>=260 && mouse_x<=320 && mouse_y>=40 && mouse_y<=440 && h_type=="Fahrenheit")
+                {
+                    //writeMessage(canvas,"Temp = " + h_value + "Fahrenheit");
+                    enable_onslide=false;
+                    sliderapi.setValue(h_value+60);
+                    Fvalue.value=h_value;
+                    Cvalue.value=Math.round((h_value-32)*5*10/9)/10;
+                    enable_onslide=true;
+                }
+            }
+            
+            function writeMessage(canvas, message) {
+                var context = canvas.getContext('2d');
+                context.clearRect(0, 0, canvas.width, 40);
+                context.font = '10pt Calibri';
+                context.fillStyle = 'black';
+                context.fillText(message, 10, 25);
+            }
+            
+            function getMousePos(canvas, evt) {
+                var rect = canvas.getBoundingClientRect();
+                return {
+                    x: evt.clientX - rect.left,
+                    y: evt.clientY - rect.top
+                };
+            }
+            
+            canvas.addEventListener('mousemove', function(evt) {
+                                    var mousePos = getMousePos(canvas, evt);
+                                    var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
+                                   // writeMessage(canvas, message);
+                                    
+                                    drawReadings('black','red',mousePos.x,mousePos.y);
+                                    
+                                    }, false);
+            
+            canvas.addEventListener('click', function(evt)
+                                    {
+                                    var mousePos = getMousePos(canvas, evt);
+                                    clickUpdate(mousePos.x,mousePos.y);
+                                    },false);
+            
+        
               $(":range").rangeinput({
                                      progress: true,
                                      max: 60
@@ -410,13 +417,13 @@
               var Fvalue = document.getElementById('Fvalue');
               var sliderapi = $("#defaultSlider").data("rangeinput");
               var enable_onslide=true;
-              
-                            
+        
+        
               $('#Fvalue').keyup(
                                  function()
                                 {
                                     enable_onslide=false;
-                                 
+        
                                     var vv= parseFloat(this.value);
                                     sliderapi.setValue(vv+60);
                                  
@@ -476,7 +483,7 @@
                                });
                
 
-              });
+              
         </script>
     </body>
 </html>
