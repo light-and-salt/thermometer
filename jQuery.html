@@ -223,7 +223,7 @@
                 
                 // draw the readings
                 context.fillStyle    = '#000';
-                context.font         = 'italic 12px sans-serif';
+                context.font         = 'normal 12px sans-serif';
                 context.textBaseline = 'middle';
                 context.beginPath();
                 var c_xbegin = centerX-10;
@@ -263,6 +263,7 @@
                 context.stroke();
                 context.closePath();
                 
+                /*
                 var canvasPosition = {
                     x: canvas.offset().left,
                     y: canvas.offset().top
@@ -281,6 +282,28 @@
                           // which consider a (0,0) origin at the
                           // top-left of canvas element
                           });
+                */
+                
+                function writeMessage(canvas, message) {
+                    var context = canvas.getContext('2d');
+                    context.clearRect(0, 0, canvas.width, 40);
+                    context.font = '10pt Calibri';
+                    context.fillStyle = 'black';
+                    context.fillText(message, 10, 25);
+                }
+                function getMousePos(canvas, evt) {
+                    var rect = canvas.getBoundingClientRect();
+                    return {
+                        x: evt.clientX - rect.left,
+                        y: evt.clientY - rect.top
+                    };
+                }
+                                
+                canvas.addEventListener('mousemove', function(evt) {
+                                        var mousePos = getMousePos(canvas, evt);
+                                        var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
+                                        writeMessage(canvas, message);
+                                        }, false);
                 
                 </script>
             
