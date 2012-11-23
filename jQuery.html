@@ -221,7 +221,7 @@
                 context.stroke();
                 context.closePath();
                 
-                drawReadings();
+                drawReadings('black');
                 /*
                 var canvasPosition = {
                     x: canvas.offset().left,
@@ -243,11 +243,15 @@
                           });
                 */
                 
-                function drawReadings()
+                function drawReadings(color)
                 {
+                    // clear the previous drawing
+                    context.clearRect(180, 40, 62, 400);
+                    context.clearRect(262, 40, 62, 400);
                     
                     // draw the readings
-                    context.fillStyle    = '#000';
+                    context.fillStyle    = color;
+                    context.strokeStyle = color;
                     context.font         = 'normal 12px sans-serif';
                     context.textBaseline = 'middle';
                     context.beginPath();
