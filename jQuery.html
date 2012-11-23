@@ -221,27 +221,7 @@
                 context.stroke();
                 context.closePath();
                 
-                drawReadings('black');
-                /*
-                var canvasPosition = {
-                    x: canvas.offset().left,
-                    y: canvas.offset().top
-                };
-                canvas.on('click', function(e) {
-                          
-                          // use pageX and pageY to get the mouse position
-                          // relative to the browser window
-                          
-                          var mouse = {
-                          x: e.pageX - canvasPosition.x,
-                          y: e.pageY - canvasPosition.y
-                          }
-                          
-                          // now you have local coordinates,
-                          // which consider a (0,0) origin at the
-                          // top-left of canvas element
-                          });
-                */
+                drawReadings('black','black',0,0);
                 
                 function drawReadings(color,h_color,mouse_x,mouse_y)
                 {
@@ -332,6 +312,22 @@
 
                 }
                 
+                function clickUpdate(mouse_x,mouse_y)
+                {
+                    writeMessage(canvas,"A click!");
+                    
+                    // clicked a C temperature
+                    if(mouse_x>=180 && mouse_x<=243 && mouse_y>=40 && mouse_y<=440)
+                    {
+                        writeMessage(canvas,"A C temperature was clicked!");
+                    }
+                    // clicked an F temperature
+                    if(mouse_x>=260 && mouse_x<=320 && mouse_y>=40 && mouse_y<=440)
+                    {
+                        writeMessage(canvas,"An F temperature was clicked.");
+                    }
+                }
+                
                 function writeMessage(canvas, message) {
                     var context = canvas.getContext('2d');
                     context.clearRect(0, 0, canvas.width, 40);
@@ -357,10 +353,11 @@
                                                                                 
                                         }, false);
                 
-                canvas.addEventListener('click', function()
+                canvas.addEventListener('click', function(evt)
                                         {
-                                        writeMessage(canvas,"A click just happened!");
-                                        });
+                                        var mousePos = getMousePos(canvas, evt);
+                                        clickUpdate(mousePos.x,mousePos.y);
+                                        },false);
                 
                 </script>
             
