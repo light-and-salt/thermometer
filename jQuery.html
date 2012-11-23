@@ -207,9 +207,9 @@
                 //context.fillStyle = 'blue';
                 //context.fillRect(centerX-5, 26, 10, canvas.height-50);
                 
+                // draw the borders
                 context.lineWidth = 2;
                 context.strokeStyle = '#0000';
-                // draw the borders
                 context.beginPath();
                 context.arc(centerX, centerY, radius+2, -0.4 * Math.PI, 1.4 * Math.PI, false);
                 context.moveTo(centerX-7, centerY-20);
@@ -217,10 +217,26 @@
                 context.arc(centerX,32,7,Math.PI,2*Math.PI,false);
                 context.moveTo(centerX+7, 32);
                 context.lineTo(centerX+7, centerY-20);
-                
                 context.stroke();
                 context.closePath();
                 
+                // draw the readings
+                var c_xbegin = centerX-10;
+                var f_xbegin = centerX+10;
+                var full = 20;
+                var half = 10;
+                var c_textl = 50;
+                var f_textl = 30;
+                var c_ybegin = 420;
+                var c_yend = 50;
+                var c_yrange = c_ybegin-c_yend;
+                var c_incre = c_yrange/22;
+                var f_incre = c_yrange*10/198;
+                var f_ybegin = c_ybegin-2*c_incre;
+                // highlight variables
+                var h_type = "none";
+                var h_value = -999;
+
                 drawReadings('black','black',0,0);
                 
                 function drawReadings(color,h_color,mouse_x,mouse_y)
@@ -231,22 +247,16 @@
                     context.clearRect(180, 40, 62, 400);
                     context.clearRect(258, 40, 65, 400);
                     
+                    // reset the highlight variables
+                    h_type="none";
+                    h_value=-999;
+                    
                     // draw the readings
                     context.fillStyle    = color;
                     context.strokeStyle = color;
                     context.font         = 'normal 12px sans-serif';
                     context.textBaseline = 'middle';
                     
-                    var c_xbegin = centerX-10;
-                    var f_xbegin = centerX+10;
-                    var full = 20;
-                    var half = 10;
-                    var c_textl = 50;
-                    var f_textl = 30;
-                    var c_ybegin = 420;
-                    var c_yend = 50;
-                    var c_yrange = c_ybegin-c_yend;
-                    var c_incre = c_yrange/22;
                     // draw the C readings
                     for(var t=-50; t<=60; t=t+5)
                     {
@@ -257,6 +267,8 @@
                         {
                             context.strokeStyle=h_color;
                             context.fillStyle=h_color;
+                            h_type="Celsius";
+                            h_value=t;
                         }
                         else
                         {
@@ -282,8 +294,6 @@
                     }
                     
                     // draw the F readings
-                    var f_incre = c_yrange*10/198;
-                    var f_ybegin = c_ybegin-2*c_incre;
                     for(var t=-60; t<=140; t=t+10)
                     {
                         var y_pos = f_ybegin - f_incre*(t+40)/10;
@@ -294,6 +304,8 @@
                             
                             context.strokeStyle=h_color;
                             context.fillStyle=h_color;
+                            h_type="Fahrenheit";
+                            h_value=t;
                         }
                         else
                         {
@@ -314,17 +326,17 @@
                 
                 function clickUpdate(mouse_x,mouse_y)
                 {
-                    writeMessage(canvas,"A click!");
-                    
                     // clicked a C temperature
-                    if(mouse_x>=180 && mouse_x<=243 && mouse_y>=40 && mouse_y<=440)
+                    if(mouse_x>=180 && mouse_x<=243 && mouse_y>=40 && mouse_y<=440 && h_type=="Celsius")
                     {
-                        writeMessage(canvas,"A C temperature was clicked!");
+                        
+                        writeMessage(canvas,"Temp = " + h_value + "Celcius");
                     }
                     // clicked an F temperature
-                    if(mouse_x>=260 && mouse_x<=320 && mouse_y>=40 && mouse_y<=440)
+                    if(mouse_x>=260 && mouse_x<=320 && mouse_y>=40 && mouse_y<=440 && h_type=="Fahrenheit")
                     {
-                        writeMessage(canvas,"An F temperature was clicked.");
+                        
+                        writeMessage(canvas,"Temp = " + h_value + "Fahrenheit");
                     }
                 }
                 
