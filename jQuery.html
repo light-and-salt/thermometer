@@ -247,7 +247,7 @@
                 {
                     // clear the previous drawing
                     context.clearRect(180, 40, 62, 400);
-                    context.clearRect(262, 40, 62, 400);
+                    context.clearRect(260, 40, 65, 400);
                     
                     // draw the readings
                     context.fillStyle    = color;
@@ -314,6 +314,15 @@
                                         var mousePos = getMousePos(canvas, evt);
                                         var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
                                         writeMessage(canvas, message);
+                                        if(mousePos.x>=180 && mousePos.x<=320 && mousePos.y>=40 && mousePos.y<=440)
+                                        {
+                                        drawReadings('red');
+                                        }
+                                        else
+                                        {
+                                        drawReadings('black');
+                                        }
+                                        
                                         }, false);
                 
                 </script>
